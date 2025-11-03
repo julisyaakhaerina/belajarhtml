@@ -1,0 +1,75 @@
+/* ======== STYLE UNTUK HALAMAN KLASIK & MODERN ======== */
+body {
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(135deg, #e3f2fd, #ffffff);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  margin: 0;
+  text-align: center;
+  color: #333;
+}
+
+/* Kotak utama konten */
+.container {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(8px);
+  padding: 40px;
+  border-radius: 20px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+  max-width: 650px;
+  width: 90%;
+  animation: fadeIn 0.8s ease-in-out;
+}
+
+/* Judul */
+.container h2 {
+  color: #1565c0;
+  margin-bottom: 20px;
+}
+
+/* Gambar */
+.container img {
+  width: 250px;
+  border-radius: 15px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  margin-bottom: 25px;
+  transition: transform 0.3s ease;
+}
+
+.container img:hover {
+  transform: scale(1.05);
+}
+
+/* Paragraf */
+.container p {
+  color: #333;
+  line-height: 1.6;
+  margin-bottom: 10px;
+}
+
+/* Tombol kembali */
+.back-btn {
+  display: inline-block;
+  background: linear-gradient(to right, #1976d2, #42a5f5);
+  color: white;
+  padding: 10px 25px;
+  border-radius: 25px;
+  text-decoration: none;
+  font-weight: 500;
+  margin-top: 20px;
+  transition: all 0.3s ease;
+}
+
+.back-btn:hover {
+  background: #1565c0;
+  transform: translateY(-3px);
+}
+
+/* Animasi muncul */
+@keyframes fadeIn {
+  from {opacity: 0; transform: translateY(15px);}
+  to {opacity: 1; transform: translateY(0);}
+}

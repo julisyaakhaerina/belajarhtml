@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Analisis Struktur CPU dan Siklus Instruksi</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+body {
+    margin: 0;
+    font-family: 'Poppins', sans-serif;
+    background-color: #f0f6ff;
+    color: #333;
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+header {
+    position: sticky;
+    top: 0;
+    background: linear-gradient(to right, #1976d2, #42a5f5);
+    padding: 15px;
+    display: flex;
+    justify-content: center;
+    gap: 25px;
+    backdrop-filter: blur(6px);
+    z-index: 10;
+}
+header a {
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    padding: 8px 15px;
+    border-radius: 5px;
+    transition: background 0.3s, transform 0.2s;
+    cursor: pointer;
+}
+header a:hover {
+    background-color: rgba(255,255,255,0.2);
+    transform: translateY(-2px);
+}
+
+/* Halaman Style */
+.page {
+    display: none;
+    max-width: 900px;
+    margin: 40px auto;
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 3px 15px rgba(0,0,0,0.1);
+    animation: fadeIn 0.6s ease-in-out;
+}
+.page.active { display: block; }
+
+h2 { 
+    color: #1565c0;
+    border-left: 5px solid #42a5f5;
+    padding-left: 10px;
+}
+h3 { margin-top:0; }
+img {
+    max-width: 100%;
+    display: block;
+    margin: 20px auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+ul, ol { padding-left: 20px; }
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+    overflow: hidden;
+    border-radius: 8px;
+}
+th, td {
+    padding: 12px;
+    text-align: center;
+    border-bottom: 1px solid #eee;
+}
+th { background: #e3f2fd; }
+tr:nth-child(even) { background: #f8fbff; }
+tr:hover { background: #e0f0ff; }
+
+/* Animasi Fade */
+@keyframes fadeIn {
+    from {opacity: 0; transform: translateY(10px);}
+    to {opacity: 1; transform: translateY(0);}
+}
+
+/* Floating Navigation */
+.nav-floating {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    display: flex;
+    gap: 10px;
+    z-index: 100;
+}
+.nav-floating button {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    border: 1px solid #ffffff55;
+    background: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(8px);
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+}
+.nav-floating button:hover {
+    background: rgba(66,165,245,0.5);
+    transform: translateY(-2px);
+}
+
+/* Grid Foto CPU */
+.grid-photos {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px;
+    margin: 20px 0;
+}
+.grid-photos img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+.grid-photos img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.25);
+}
+
+.cpu-card-container {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.cpu-card {
+    width: 200px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    overflow: hidden;
+    text-align: center;
+    background: #f9f9f9;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+}
+
+.cpu-card img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+}
+
+.cpu-card p {
+    padding: 10px;
+    font-weight: bold;
+}
+
+</style>
+<style>
+.video-container {
+    position: relative;
+    padding-bottom: 56.25%; /* Rasio 16:9 */
+    height: 0;
+    overflow: hidden;
+    max-width: 100%;
+    border-radius: 10px;
+    margin-top: 15px;
+}
+
+.video-container iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+/* Layout Video + Deskripsi */
+.video-wrapper {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 25px;
+    margin-top: 20px;
+}
+
+.video-wrapper video {
+    width: 45%;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+}
+
+.video-description {
+    width: 50%;
+    font-size: 15px;
+    line-height: 1.6;
+    text-align: justify;
+}
+
+.video-description h3 {
+    color: #1565c0;
+    margin-bottom: 8px;
+}
+
+</style>
+</head>
+<body>
+
+<header>
+    <a onclick="goToPage(0)">Beranda</a>
+    <a onclick="goToPage(1)">Analisis</a>
+    <a onclick="goToPage(2)">Struktur CPU</a>
+    <a onclick="goToPage(3)">Simulasi</a>
+    <a onclick="goToPage(4)">Perbandingan</a>
+    <a onclick="goToPage(5)">Kesimpulan</a>
+</header>
+
+<!-- Halaman 1: Beranda dengan grid foto -->
+<div class="page active" id="page0">
+    <h2>Beranda</h2>
+    <h3>Selamat datang di analisis CPU KLASIK DAN MODERN. Berikut koleksi gambar CPU</h3>
+
+    <!-- Grid Foto CPU -->
+    <div class="grid-photos">
+        <img src="https://www.shutterstock.com/image-illustration/2d-illustration-central-processing-unit-600nw-2671698899.jpg">
+        <img src="https://unpab.wordpress.com/wp-content/uploads/2018/09/images2.jpg?w=678">
+        <img src="https://img.freepik.com/free-vector/realistic-microchip-processor-background_52683-58132.jpg">
+        <img src="https://plus.unsplash.com/premium_photo-1714618946021-8fbd6394d1a8?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="CPU 3">
+    </div>
+
+     <!-- Preview Halaman Lain -->
+    <div style="background:#e3f2fd; padding:15px; border-radius:10px; margin-bottom:20px;">
+        <h3>Pengertian CPU </h3>
+        <p>CPU atau Central Processing Unit adalah "otak" komputer yang berfungsi untuk memproses semua instruksi dari perangkat lunak,
+         melakukan perhitungan, dan mengelola operasi serta aktivitas komponen komputer lainnya. Tugas utama CPU adalah mengubah
+         data menjadi informasi dan menjalankan perintah dengan mengeksekusi instruksi program secara simultan.</p>
+    </div>
+
+    <!-- Preview Halaman Lain -->
+    <div style="background:#e3f2fd; padding:15px; border-radius:10px; margin-bottom:20px;">
+        <h3>Analisis Perbedaan antara KLASIK dan MODERN</h3> 
+        <p> CPU klasik adalah prosesor generasi awal yang memiliki arsitektur sederhana dan biasanya hanya mampu 
+            mengeksekusi satu instruksi pada satu waktu. Dan CPU modern adalah prosesor masa kini dengan arsitektur
+             kompleks dan efisien, mampu menjalankan banyak instruksi secara bersamaan.</p>
+
+    </div>
+
+    <div style="background:#f0f6ff; padding:15px; border-radius:10px; margin-bottom:20px;">
+        <h3>Struktur CPU</h3>
+        <ul>
+            <li><b>ALU</b> - Operasi aritmatika & logika</li>
+            <li><b>CU</b> - Mengatur instruksi</li>
+            <li><b>Register</b> - Penyimpanan cepat</li>
+            <li><b>Cache</b> - Akses data cepat</li>
+            <li><b>Bus</b> - Jalur data antar komponen</li>
+        </ul>
+    </div>
+
+    <div style="background:#e3f2fd; padding:15px; border-radius:10px; margin-bottom:20px;">
+        <h3>Simulasi Perbandingan</h3>
+        <ol>
+            <li>Fetch - Ambil instruksi dari memori</li>
+            <li>Decode - Terjemahkan instruksi</li>
+            <li>Execute - Jalankan instruksi</li>
+        </ol>
+    </div>
+
+    <div style="background:#f0f6ff; padding:15px; border-radius:10px; margin-bottom:20px;">
+        <h3>Perbandingan CPU</h3>
+        <table>
+            <tr>
+                <th>Aspek</th><th>Klasik</th><th>Modern</th>
+            </tr>
+            <tr>
+                <td>Jumlah Core</td><td>Single Core</td><td>Multi Core (4-16)</td>
+            </tr>
+            <tr>
+                <td>Kecepatan</td><td>MHz</td><td>GHz</td>
+            </tr>
+            <tr>
+                <td>Arsitektur</td><td>32-bit</td><td>64-bit</td>
+            </tr>
+            <tr>
+                <td>Konsumsi Daya</td><td>Boros dan panas</td><td>Lebih hemat energi</td>
+            </tr>
+        </table>
+    </div>
+
+    <div style="background:#e3f2fd; padding:15px; border-radius:10px; margin-bottom:20px;">
+        <h3>Kesimpulan</h3>
+        <p>CPU bekerja dari Fetch hingga Execute. ALU, CU, Register, dan Cache berperan penting untuk performa optimal.</p>
+    </div>
+</div>
+
+<!-- Halaman 2: Analisis Struktur CPU -->
+<div class="page" id="page1">
+    <h2>Analisis Struktur CPU</h2>
+    <p>CPU (Central Processing Unit) adalah inti dari sistem komputer yang bertanggung jawab memproses instruksi dari perangkat lunak dan hardware. Analisis struktur CPU penting untuk memahami bagaimana data diproses dan dieksekusi secara efisien.</p>
+    <p>CPU modern terdiri dari beberapa komponen utama yang bekerja paralel: ALU, Control Unit, Register, Cache. Pemahaman interaksi antar komponen memungkinkan optimisasi kinerja CPU dan pemanfaatan sumber daya maksimal.</p>
+    <p>CPU klasik adalah prosesor generasi awal yang memiliki arsitektur sederhana dan biasanya hanya mampu mengeksekusi satu instruksi pada satu waktu.</p>
+    <p>Teknologi multi-core dan pipeline meningkatkan throughput instruksi per detik. Analisis mendalam juga melibatkan siklus instruksi, microarchitecture, prediksi, dan manajemen cache.</p>
+</div>
+
+<!-- Halaman 3: Struktur CPU -->
+<div class="page" id="page2">
+  <h2>Struktur CPU</h2>
+  <ul>
+    <li><b>ALU (Arithmetic Logic Unit)</b> - Melakukan operasi aritmatika dan logika.</li>
+    <li><b>CU (Control Unit)</b> - Mengatur jalannya instruksi.</li>
+    <li><b>Register</b> - Penyimpanan kecil berkecepatan tinggi.</li>
+    <li><b>Cache</b> - Penyimpanan sementara untuk mempercepat akses data.</li>
+    <li><b>Bus</b> - Jalur transfer data antar komponen.</li>
+  </ul>
+  <!-- Tambahan: Video + Link Download -->
+   <!-- Tambahan: Video dengan Suara -->
+<div class="video-wrapper" style="flex-direction: column; align-items: center;">
+  <video controls poster="https://cdn.pixabay.com/photo/2017/06/10/07/18/computer-2381134_1280.jpg" style="width: 80%; max-width: 700px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.15);">
+    <source src="c:\Users\User\Downloads\WhatsApp Video 2025-11-03 at 15.11.22.mp4" type="video/mp4">
+    Browser Anda tidak mendukung video.
+  </video>
+</div>
+
+</div>
+
+
+<!-- Halaman 4: Siklus Instruksi -->
+<div class="page" id="page3">
+  <h2>Simulasi Cara kerja CPU</h2>
+
+  <div class="video-wrapper">
+    <video autoplay muted loop controls>
+      <source src="c:\Users\User\Downloads\WhatsApp Video 2025-11-03 at 15.03.23.mp4" type="video/mp4">
+      Browser Anda tidak mendukung video tag.
+    </video>
+
+    <div class="video-description">
+      <h3>Cara Kerja CPU</h3>
+      <p>CPU (Central Processing Unit) bekerja sebagai otak utama komputer yang menjalankan instruksi dari program. 
+         Prosesnya terdiri dari tiga tahap utama:</p>
+      <ul>
+        <li><b>Fetch:</b> Mengambil instruksi dari memori utama.</li>
+        <li><b>Decode:</b> Menguraikan instruksi agar dimengerti oleh sistem.</li>
+        <li><b>Execute:</b> Menjalankan instruksi menggunakan unit logika aritmetika.</li>
+      </ul>
+      <p>Proses ini berlangsung sangat cepat dan berulang jutaan kali per detik, memungkinkan komputer bekerja efisien.</p>
+    </div>
+  </div>
+</div>
+
+<!-- Halaman 5: Perbandingan CPU -->
+<div class="page" id="page4">
+    <h2>Perbandingan CPU Klasik vs Modern</h2>
+    <table>
+        <tr>
+            <th>Aspek</th>
+            <th>CPU Klasik</th>
+            <th>CPU Modern</th>
+        </tr>
+        <tr>
+            <td>Jumlah Core</td>
+            <td>Single Core</td>
+            <td>Multi Core (4-16 Core)</td>
+        </tr>
+        <tr>
+            <td>Kecepatan</td>
+            <td>MHz</td>
+            <td>GHz</td>
+        </tr>
+        <tr>
+            <td>Arsitektur</td>
+            <td>32-bit</td>
+            <td>64-bit</td>
+        </tr>
+        <tr>
+            <td>Konsumsi Daya</td>
+            <td>Boros dan panas</td>
+            <td>Lebih hemat energi</td>
+        </tr>
+    </table>
+    <!-- Tambahan Card Gambar -->
+    <!-- Tambahan Card Gambar -->
+<div class="cpu-card-container">
+    <a href="klasik.html" class="cpu-card">
+        <img src="https://assets.pikiran-rakyat.com/crop/0x0:0x0/720x0/webp/photo/2024/12/27/1642863674.jpg" alt="CPU Klasik">
+        <p>Lihat Detail -></p>
+    </a>
+
+    <a href="modern.html" class="cpu-card">
+        <img src="https://5.imimg.com/data5/SELLER/Default/2021/6/KT/DS/EL/12042782/intel-core-i7-processor-500x500.jpg" alt="CPU Modern">
+        <p>Lihat Detail -></p>
+    </a>
+</div>
+
+</div>
+</div>
+
+<!-- Halaman 6: Kesimpulan -->
+<div class="page" id="page5">
+    <h2>Kesimpulan</h2>
+    <p>CPU bekerja melalui tahapan sistematis dari Fetch hingga Execute. Struktur internal seperti ALU, CU, dan Register berperan penting dalam memproses data secara cepat dan efisien. Memahami analisis struktur CPU membantu optimisasi kinerja komputer dan pemanfaatan teknologi modern.</p>
+</div>
+
+<!-- Floating Navigation -->
+<div class="nav-floating">
+    <button id="prevBtn">⬅</button>
+    <button id="nextBtn">➤</button>
+</div>
+
+<script>
+// Multi-view Navigation
+let currentPage = 0;
+const pages = document.querySelectorAll('.page');
+function showPage(index){
+    pages.forEach(p=>p.classList.remove('active'));
+    pages[index].classList.add('active');
+    currentPage = index;
+}
+function goToPage(index){ showPage(index); }
+document.getElementById('prevBtn').addEventListener('click',()=>{
+    if(currentPage>0) showPage(currentPage-1);
+});
+document.getElementById('nextBtn').addEventListener('click',()=>{
+    if(currentPage<pages.length-1) showPage(currentPage+1);
+});
+</script>
+
+</body>
+</html>
