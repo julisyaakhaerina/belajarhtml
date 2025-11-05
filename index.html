@@ -208,6 +208,91 @@ tr:hover { background: #e0f0ff; }
     color: #1565c0;
     margin-bottom: 8px;
 }
+/* Navbar layout: kiri link, kanan search */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 40px;
+}
+
+/* Bagian link navigasi */
+.nav-links {
+    display: flex;
+    gap: 25px;
+}
+
+/* Search bar style */
+.search-form {
+    display: flex;
+    align-items: center;
+    background: rgba(255,255,255,0.2);
+    padding: 5px 10px;
+    border-radius: 30px;
+    transition: 0.3s;
+}
+.search-input {
+    border: none;
+    outline: none;
+    background: transparent;
+    color: white;
+    padding: 5px 10px;
+    font-size: 14px;
+    width: 120px;
+    transition: width 0.3s;
+}
+.search-input::placeholder {
+    color: rgba(255,255,255,0.8);
+}
+.search-input:focus {
+    width: 180px;
+    background: rgba(255,255,255,0.15);
+    border-radius: 30px;
+}
+.search-button {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-size: 18px;
+    margin-left: 5px;
+    transition: transform 0.2s;
+}
+.search-button:hover {
+    transform: scale(1.1);
+}
+/* Container untuk search dan hasil */
+.search-container {
+    position: relative;
+}
+
+/* Kotak rekomendasi */
+.suggestion-box {
+    position: absolute;
+    top: 40px;
+    right: 0;
+    width: 220px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+    list-style: none;
+    padding: 5px 0;
+    margin: 0;
+    z-index: 999;
+    display: none;
+}
+
+/* Setiap item rekomendasi */
+.suggestion-box li {
+    padding: 8px 12px;
+    cursor: pointer;
+    transition: background 0.2s;
+    font-size: 14px;
+}
+.suggestion-box li:hover {
+    background: #e3f2fd;
+    color: #1565c0;
+}
 
 </style>
 </head>
@@ -220,6 +305,21 @@ tr:hover { background: #e0f0ff; }
     <a onclick="goToPage(3)">Simulasi</a>
     <a onclick="goToPage(4)">Perbandingan</a>
     <a onclick="goToPage(5)">Kesimpulan</a>
+
+<!-- Search bar dengan rekomendasi -->
+<div class="search-container">
+  <form action="#" class="search-form" onsubmit="return false;">
+    <input 
+      type="text" 
+      placeholder="Cari..." 
+      id="searchInput" 
+      class="search-input" 
+      oninput="showSuggestions(this.value)"
+    >
+    <button type="submit" class="search-button">🔍</button>
+  </form>
+  <ul id="suggestionBox" class="suggestion-box"></ul>
+</div>
 </header>
 
 <!-- Halaman 1: Beranda dengan grid foto -->
@@ -229,10 +329,10 @@ tr:hover { background: #e0f0ff; }
 
     <!-- Grid Foto CPU -->
     <div class="grid-photos">
-        <img src="https://www.shutterstock.com/image-illustration/2d-illustration-central-processing-unit-600nw-2671698899.jpg">
-        <img src="https://unpab.wordpress.com/wp-content/uploads/2018/09/images2.jpg?w=678">
-        <img src="https://img.freepik.com/free-vector/realistic-microchip-processor-background_52683-58132.jpg">
-        <img src="https://plus.unsplash.com/premium_photo-1714618946021-8fbd6394d1a8?fm=jpg&q=60&w=3000&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="CPU 3">
+        <img src="assets/foto1.webp">
+        <img src="assets/foto2.webp">
+        <img src="assets/foto3.jpg">
+        <img src="assets/foto4.jpg">
     </div>
 
      <!-- Preview Halaman Lain -->
@@ -322,7 +422,7 @@ tr:hover { background: #e0f0ff; }
    <!-- Tambahan: Video dengan Suara -->
 <div class="video-wrapper" style="flex-direction: column; align-items: center;">
   <video controls poster="https://cdn.pixabay.com/photo/2017/06/10/07/18/computer-2381134_1280.jpg" style="width: 80%; max-width: 700px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.15);">
-    <source src="c:\Users\User\Downloads\WhatsApp Video 2025-11-03 at 15.11.22.mp4" type="video/mp4">
+    <source src="assets/WhatsApp Video 2025-11-03 at 15.11.22.mp4" type="video/mp4">
     Browser Anda tidak mendukung video.
   </video>
 </div>
@@ -336,7 +436,7 @@ tr:hover { background: #e0f0ff; }
 
   <div class="video-wrapper">
     <video autoplay muted loop controls>
-      <source src="c:\Users\User\Downloads\WhatsApp Video 2025-11-03 at 15.03.23.mp4" type="video/mp4">
+      <source src="assets/WhatsApp Video 2025-11-03 at 15.03.23.mp4" type="video/mp4">
       Browser Anda tidak mendukung video tag.
     </video>
 
@@ -388,12 +488,12 @@ tr:hover { background: #e0f0ff; }
     <!-- Tambahan Card Gambar -->
 <div class="cpu-card-container">
     <a href="klasik.html" class="cpu-card">
-        <img src="https://assets.pikiran-rakyat.com/crop/0x0:0x0/720x0/webp/photo/2024/12/27/1642863674.jpg" alt="CPU Klasik">
+        <img src="assets/foto5.webp" alt="CPU Klasik">
         <p>Lihat Detail -></p>
     </a>
 
     <a href="modern.html" class="cpu-card">
-        <img src="https://5.imimg.com/data5/SELLER/Default/2021/6/KT/DS/EL/12042782/intel-core-i7-processor-500x500.jpg" alt="CPU Modern">
+        <img src="assets/foto6.webp" alt="CPU Modern">
         <p>Lihat Detail -></p>
     </a>
 </div>
@@ -429,7 +529,66 @@ document.getElementById('prevBtn').addEventListener('click',()=>{
 document.getElementById('nextBtn').addEventListener('click',()=>{
     if(currentPage<pages.length-1) showPage(currentPage+1);
 });
-</script>
 
+// Daftar isi (kata kunci) berdasarkan konten websitemu
+const searchData = [
+  { title: "Pengertian CPU", page: 0 },
+  { title: "Analisis Struktur CPU", page: 1 },
+  { title: "Struktur CPU", page: 2 },
+  { title: "ALU (Arithmetic Logic Unit)", page: 2 },
+  { title: "CU (Control Unit)", page: 2 },
+  { title: "Register", page: 2 },
+  { title: "Cache", page: 2 },
+  { title: "Simulasi Cara Kerja CPU", page: 3 },
+  { title: "Perbandingan CPU Klasik vs Modern", page: 4 },
+  { title: "CPU Klasik", page: 4 },
+  { title: "CPU Modern", page: 4 },
+  { title: "Kesimpulan CPU", page: 5 }
+];
+
+const input = document.getElementById("searchInput");
+const suggestionBox = document.getElementById("suggestionBox");
+
+// Menampilkan rekomendasi sesuai input
+function showSuggestions(value) {
+  const query = value.toLowerCase();
+  suggestionBox.innerHTML = "";
+  if (!query) {
+    suggestionBox.style.display = "none";
+    return;
+  }
+
+  // Filter hasil berdasarkan teks yang cocok
+  const filtered = searchData.filter(item =>
+    item.title.toLowerCase().includes(query)
+  );
+
+  if (filtered.length === 0) {
+    suggestionBox.style.display = "none";
+    return;
+  }
+
+  // Tampilkan daftar hasil
+  filtered.forEach(item => {
+    const li = document.createElement("li");
+    li.textContent = item.title;
+    li.onclick = () => {
+      goToPage(item.page);
+      suggestionBox.style.display = "none";
+      input.value = "";
+    };
+    suggestionBox.appendChild(li);
+  });
+
+  suggestionBox.style.display = "block";
+}
+
+// Menyembunyikan kotak saran saat klik di luar
+document.addEventListener("click", (e) => {
+  if (!e.target.closest(".search-container")) {
+    suggestionBox.style.display = "none";
+  }
+});
+</script>
 </body>
 </html>
