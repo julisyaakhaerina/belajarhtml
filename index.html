@@ -18,18 +18,18 @@ header {
     position: sticky;
     top: 0;
     background: linear-gradient(to right, #1976d2, #42a5f5);
-    padding: 15px;
+    padding: 15px 50px; /* PADDING DIUBAH: Menambah jarak di tepi kiri dan kanan header */
     display: flex;
-    justify-content: center;
-    gap: 25px;
+    justify-content: space-between;
+    align-items: center;
     backdrop-filter: blur(6px);
-    z-index: 10;
+    z-index: 20;
 }
 header a {
     color: white;
     text-decoration: none;
     font-weight: 500;
-    padding: 8px 15px;
+    padding: 15px 15px;
     border-radius: 5px;
     transition: background 0.3s, transform 0.2s;
     cursor: pointer;
@@ -39,15 +39,16 @@ header a:hover {
     transform: translateY(-2px);
 }
 
-/* Halaman Style */
+/* Halaman Style - SUDAH DIMODIFIKASI UNTUK FULL SCREEN */
 .page {
     display: none;
-    max-width: 900px;
-    margin: 40px auto;
+    max-width: 100%; 
+    margin: 0; 
+    margin-top: 0px; 
     background: white;
-    padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 3px 15px rgba(0,0,0,0.1);
+    padding: 30px 50px; 
+    border-radius: 0; 
+    box-shadow: none; 
     animation: fadeIn 0.6s ease-in-out;
 }
 .page.active { display: block; }
@@ -219,7 +220,7 @@ header {
 /* Bagian link navigasi */
 .nav-links {
     display: flex;
-    gap: 25px;
+    gap: 40px; /* NILAI BARU: Jarak antar menu lebih besar */
 }
 
 /* Search bar style */
@@ -299,35 +300,34 @@ header {
 <body>
 
 <header>
-    <a onclick="goToPage(0)">Beranda</a>
-    <a onclick="goToPage(1)">Analisis</a>
-    <a onclick="goToPage(2)">Struktur CPU</a>
-    <a onclick="goToPage(3)">Simulasi</a>
-    <a onclick="goToPage(4)">Perbandingan</a>
-    <a onclick="goToPage(5)">Kesimpulan</a>
+    <div class="nav-links">
+        <a onclick="goToPage(0)">Beranda</a>
+        <a onclick="goToPage(1)">Analisis</a>
+        <a onclick="goToPage(2)">Struktur CPU</a>
+        <a onclick="goToPage(3)">Simulasi</a>
+        <a onclick="goToPage(4)">Perbandingan</a>
+        <a onclick="goToPage(5)">Quiz</a>
+    </div>
 
-<!-- Search bar dengan rekomendasi -->
 <div class="search-container">
-  <form action="#" class="search-form" onsubmit="return false;">
-    <input 
-      type="text" 
-      placeholder="Cari..." 
-      id="searchInput" 
-      class="search-input" 
-      oninput="showSuggestions(this.value)"
-    >
-    <button type="submit" class="search-button">🔍</button>
-  </form>
-  <ul id="suggestionBox" class="suggestion-box"></ul>
+    <form action="#" class="search-form" onsubmit="return false;">
+        <input 
+            type="text" 
+            placeholder="Cari..." 
+            id="searchInput" 
+            class="search-input" 
+            oninput="showSuggestions(this.value)"
+        >
+        <button type="submit" class="search-button">🔍</button>
+    </form>
+    <ul id="suggestionBox" class="suggestion-box"></ul>
 </div>
 </header>
 
-<!-- Halaman 1: Beranda dengan grid foto -->
 <div class="page active" id="page0">
     <h2>Beranda</h2>
     <h3>Selamat datang di analisis CPU KLASIK DAN MODERN. Berikut koleksi gambar CPU</h3>
 
-    <!-- Grid Foto CPU -->
     <div class="grid-photos">
         <img src="assets/foto1.webp">
         <img src="assets/foto2.webp">
@@ -335,19 +335,17 @@ header {
         <img src="assets/foto4.jpg">
     </div>
 
-     <!-- Preview Halaman Lain -->
     <div style="background:#e3f2fd; padding:15px; border-radius:10px; margin-bottom:20px;">
         <h3>Pengertian CPU </h3>
         <p>CPU atau Central Processing Unit adalah "otak" komputer yang berfungsi untuk memproses semua instruksi dari perangkat lunak,
-         melakukan perhitungan, dan mengelola operasi serta aktivitas komponen komputer lainnya. Tugas utama CPU adalah mengubah
-         data menjadi informasi dan menjalankan perintah dengan mengeksekusi instruksi program secara simultan.</p>
+            melakukan perhitungan, dan mengelola operasi serta aktivitas komponen komputer lainnya. Tugas utama CPU adalah mengubah
+            data menjadi informasi dan menjalankan perintah dengan mengeksekusi instruksi program secara simultan.</p>
     </div>
 
-    <!-- Preview Halaman Lain -->
     <div style="background:#e3f2fd; padding:15px; border-radius:10px; margin-bottom:20px;">
         <h3>Analisis Perbedaan antara KLASIK dan MODERN</h3> 
         <p> CPU klasik adalah prosesor generasi awal yang memiliki arsitektur sederhana dan biasanya hanya mampu 
-            mengeksekusi satu instruksi pada satu waktu. Dan CPU modern adalah prosesor masa kini dengan arsitektur
+             mengeksekusi satu instruksi pada satu waktu. Dan CPU modern adalah prosesor masa kini dengan arsitektur
              kompleks dan efisien, mampu menjalankan banyak instruksi secara bersamaan.</p>
 
     </div>
@@ -399,7 +397,6 @@ header {
     </div>
 </div>
 
-<!-- Halaman 2: Analisis Struktur CPU -->
 <div class="page" id="page1">
     <h2>Analisis Struktur CPU</h2>
     <p>CPU (Central Processing Unit) adalah inti dari sistem komputer yang bertanggung jawab memproses instruksi dari perangkat lunak dan hardware. Analisis struktur CPU penting untuk memahami bagaimana data diproses dan dieksekusi secara efisien.</p>
@@ -408,53 +405,48 @@ header {
     <p>Teknologi multi-core dan pipeline meningkatkan throughput instruksi per detik. Analisis mendalam juga melibatkan siklus instruksi, microarchitecture, prediksi, dan manajemen cache.</p>
 </div>
 
-<!-- Halaman 3: Struktur CPU -->
 <div class="page" id="page2">
-  <h2>Struktur CPU</h2>
-  <ul>
-    <li><b>ALU (Arithmetic Logic Unit)</b> - Melakukan operasi aritmatika dan logika.</li>
-    <li><b>CU (Control Unit)</b> - Mengatur jalannya instruksi.</li>
-    <li><b>Register</b> - Penyimpanan kecil berkecepatan tinggi.</li>
-    <li><b>Cache</b> - Penyimpanan sementara untuk mempercepat akses data.</li>
-    <li><b>Bus</b> - Jalur transfer data antar komponen.</li>
-  </ul>
-  <!-- Tambahan: Video + Link Download -->
-   <!-- Tambahan: Video dengan Suara -->
-<div class="video-wrapper" style="flex-direction: column; align-items: center;">
-  <video controls poster="https://cdn.pixabay.com/photo/2017/06/10/07/18/computer-2381134_1280.jpg" style="width: 80%; max-width: 700px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.15);">
-    <source src="assets/WhatsApp Video 2025-11-03 at 15.11.22.mp4" type="video/mp4">
-    Browser Anda tidak mendukung video.
-  </video>
-</div>
-
-</div>
-
-
-<!-- Halaman 4: Siklus Instruksi -->
-<div class="page" id="page3">
-  <h2>Simulasi Cara kerja CPU</h2>
-
-  <div class="video-wrapper">
-    <video autoplay muted loop controls>
-      <source src="assets/WhatsApp Video 2025-11-03 at 15.03.23.mp4" type="video/mp4">
-      Browser Anda tidak mendukung video tag.
-    </video>
-
-    <div class="video-description">
-      <h3>Cara Kerja CPU</h3>
-      <p>CPU (Central Processing Unit) bekerja sebagai otak utama komputer yang menjalankan instruksi dari program. 
-         Prosesnya terdiri dari tiga tahap utama:</p>
-      <ul>
-        <li><b>Fetch:</b> Mengambil instruksi dari memori utama.</li>
-        <li><b>Decode:</b> Menguraikan instruksi agar dimengerti oleh sistem.</li>
-        <li><b>Execute:</b> Menjalankan instruksi menggunakan unit logika aritmetika.</li>
-      </ul>
-      <p>Proses ini berlangsung sangat cepat dan berulang jutaan kali per detik, memungkinkan komputer bekerja efisien.</p>
+    <h2>Struktur CPU</h2>
+    <ul>
+        <li><b>ALU (Arithmetic Logic Unit)</b> - Melakukan operasi aritmatika dan logika.</li>
+        <li><b>CU (Control Unit)</b> - Mengatur jalannya instruksi.</li>
+        <li><b>Register</b> - Penyimpanan kecil berkecepatan tinggi.</li>
+        <li><b>Cache</b> - Penyimpanan sementara untuk mempercepat akses data.</li>
+        <li><b>Bus</b> - Jalur transfer data antar komponen.</li>
+    </ul>
+    <div class="video-wrapper" style="flex-direction: column; align-items: center;">
+        <video controls poster="https://cdn.pixabay.com/photo/2017/06/10/07/18/computer-2381134_1280.jpg" style="width: 80%; max-width: 700px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.15);">
+            <source src="assets/WhatsApp Video 2025-11-03 at 15.11.22.mp4" type="video/mp4">
+            Browser Anda tidak mendukung video.
+        </video>
     </div>
-  </div>
+
 </div>
 
-<!-- Halaman 5: Perbandingan CPU -->
+
+<div class="page" id="page3">
+    <h2>Simulasi Cara kerja CPU</h2>
+
+    <div class="video-wrapper">
+        <video autoplay muted loop controls>
+            <source src="assets/WhatsApp Video 2025-11-03 at 15.03.23.mp4" type="video/mp4">
+            Browser Anda tidak mendukung video tag.
+        </video>
+
+        <div class="video-description">
+            <h3>Cara Kerja CPU</h3>
+            <p>CPU (Central Processing Unit) bekerja sebagai otak utama komputer yang menjalankan instruksi dari program. 
+                Prosesnya terdiri dari tiga tahap utama:</p>
+            <ul>
+                <li><b>Fetch:</b> Mengambil instruksi dari memori utama.</li>
+                <li><b>Decode:</b> Menguraikan instruksi agar dimengerti oleh sistem.</li>
+                <li><b>Execute:</b> Menjalankan instruksi menggunakan unit logika aritmetika.</li>
+            </ul>
+            <p>Proses ini berlangsung sangat cepat dan berulang jutaan kali per detik, memungkinkan komputer bekerja efisien.</p>
+        </div>
+    </div>
+</div>
+
 <div class="page" id="page4">
     <h2>Perbandingan CPU Klasik vs Modern</h2>
     <table>
@@ -484,33 +476,233 @@ header {
             <td>Lebih hemat energi</td>
         </tr>
     </table>
-    <!-- Tambahan Card Gambar -->
-    <!-- Tambahan Card Gambar -->
-<div class="cpu-card-container">
-    <a href="klasik.html" class="cpu-card">
-        <img src="assets/foto5.webp" alt="CPU Klasik">
-        <p>Lihat Detail -></p>
-    </a>
+    <div class="cpu-card-container">
+        <a href="klasik.html" class="cpu-card">
+            <img src="assets/foto5.webp" alt="CPU Klasik">
+            <p>Lihat Detail -></p>
+        </a>
 
-    <a href="modern.html" class="cpu-card">
-        <img src="assets/foto6.webp" alt="CPU Modern">
-        <p>Lihat Detail -></p>
-    </a>
-</div>
+        <a href="modern.html" class="cpu-card">
+            <img src="assets/foto6.webp" alt="CPU Modern">
+            <p>Lihat Detail -></p>
+        </a>
+    </div>
 
 </div>
-</div>
 
-<!-- Halaman 6: Kesimpulan -->
 <div class="page" id="page5">
-    <h2>Kesimpulan</h2>
-    <p>CPU bekerja melalui tahapan sistematis dari Fetch hingga Execute. Struktur internal seperti ALU, CU, dan Register berperan penting dalam memproses data secara cepat dan efisien. Memahami analisis struktur CPU membantu optimisasi kinerja komputer dan pemanfaatan teknologi modern.</p>
-</div>
+    <style>
+    /* STYLE QUIZ DISESUAIKAN AGAR COCOK DENGAN WEB UTAMA */
+    .quiz-box {
+        background: rgba(143, 185, 205, 0.9);
+        width: 520px;
+        margin: auto;
+        padding: 20px;
+        border-radius: 12px;
+        box-shadow: 0 0 15px rgba(0,0,0,0.3);
+        text-align: center; /* Tambahkan agar konten di tengah saat belum mulai */
+    }
 
-<!-- Floating Navigation -->
-<div class="nav-floating">
-    <button id="prevBtn">⬅</button>
-    <button id="nextBtn">➤</button>
+    #quiz {
+        animation: slideQuiz 0.5s;
+        text-align: left; /* Kembalikan perataan teks ke kiri untuk soal */
+        min-height: 150px; /* Jaga agar kotak quiz tidak melompat-lompat */
+    }
+
+    @keyframes slideQuiz {
+        from {opacity: 0; transform: translateX(40px);}
+        to {opacity: 1; transform: translateX(0);}
+    }
+
+    .quiz-btn {
+        padding: 8px 15px;
+        border: none;
+        background: #1976d2; /* Warna tombol disamakan dengan header */
+        color: white;
+        border-radius: 5px;
+        margin-top: 15px;
+        cursor: pointer;
+        transition: background 0.3s;
+    }
+
+    .quiz-btn:hover {
+        background: #1565c0;
+    }
+
+    #timer { font-weight: bold; color: #d32f2f; } /* Warna merah gelap */
+
+    textarea {
+        width: 100%;
+        height: 60px;
+        padding: 8px;
+        box-sizing: border-box;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+    }
+
+    #ulang, #nextBtn {
+        display: none;
+    }
+    #startBtn {
+        background: #4caf50; /* Warna hijau untuk Mulai */
+        font-size: 1.1em;
+        padding: 10px 20px;
+    }
+    #startBtn:hover {
+        background: #388e3c;
+    }
+    </style>
+
+    <audio id="klik" src="https://www.soundjay.com/buttons/sounds/button-09.mp3"></audio>
+    <audio id="benar" src="https://www.soundjay.com/buttons/sounds/button-3.mp3"></audio>
+    <audio id="salah" src="https://www.soundjay.com/buttons/sounds/button-10.mp3"></audio>
+    <audio id="selesai" src="https://www.soundjay.com/human/sounds/applause-8.mp3"></audio>
+
+    <div class="quiz-box">
+        <h2>Quiz CPU Klasik & CPU Modern</h2>
+        <p>Waktu: <span id="timer">60</span> detik</span></p>
+
+        <div id="quiz">
+            <p>Tekan tombol di bawah untuk memulai quiz selama 60 detik.</p>
+        </div>
+
+        <button id="startBtn" class="quiz-btn" onclick="mulaiQuiz()">Mulai Quiz</button>
+        <button id="nextBtn" class="quiz-btn" onclick="next()">Next</button>
+        <button id="ulang" class="quiz-btn" onclick="ulangQuiz()">Ulangi Quiz</button>
+
+        <h3 id="hasil"></h3>
+    </div>
+
+    <script>
+    let waktu = 60;
+    let skor = 0;
+    let index = 0;
+    let interval; // Variabel untuk menyimpan timer
+
+    // Dafta Soal
+    const soal = [
+        { tipe: "pg", tanya: "1.CPU generasi pertama menggunakan teknologi?", pilihan: { a: "Transistor", b: "Tabung Vakum", c: "IC" }, benar: "b" },
+        { tipe: "pg", tanya: "2.Contoh CPU modern yang banyak digunakan saat ini adalah?", pilihan: { a: "Intel Core i7", b: "Intel 4004", c: "ENIAC" }, benar: "a" },
+        { tipe: "pg", tanya: "3.CPU klasik memiliki ukuran?", pilihan: { a: "Sangat kecil", b: "Sedang", c: "Sangat besar" }, benar: "c" },
+        { tipe: "esai", tanya: "4.Jelaskan perbedaan utama antara CPU klasik dan CPU modern!", kunci: ["besar", "kecil", "cepat", "hemat"] },
+        { tipe: "esai", tanya: "5.Sebutkan 1 contoh CPU klasik dan 1 CPU modern!", kunci: ["eniac", "intel", "amd"] }
+    ];
+
+    // Fungsi untuk menampilkan soal
+    function tampil() {
+        let q = soal[index];
+        let html = "<h3>" + q.tanya + "</h3>";
+
+        if (q.tipe === "pg") {
+            html += `
+                <input type="radio" name="jawab" value="a"> ${q.pilihan.a}<br>
+                <input type="radio" name="jawab" value="b"> ${q.pilihan.b}<br>
+                <input type="radio" name="jawab" value="c"> ${q.pilihan.c}<br>
+            `;
+        } else {
+            html += `<textarea id="jawaban"></textarea>`;
+        }
+
+        document.getElementById("quiz").innerHTML = html;
+        document.getElementById("nextBtn").style.display = "inline-block"; // Tampilkan tombol next setelah soal tampil
+    }
+
+    // Fungsi untuk memproses jawaban dan pindah ke soal berikutnya
+    function next() {
+        document.getElementById("klik").play();
+        let q = soal[index];
+        let benarJawaban = false;
+
+        if (q.tipe === "pg") {
+            let pilih = document.querySelector('input[name="jawab"]:checked');
+            if (!pilih) { alert("Pilih jawaban dulu!"); return; }
+            if (pilih.value === q.benar) benarJawaban = true;
+        } else {
+            let teks = document.getElementById("jawaban").value.toLowerCase();
+            if (teks.trim() === "") { alert("Jawaban tidak boleh kosong!"); return; }
+
+            // Logika penilaian esai (mencocokkan kata kunci)
+            for (let k of q.kunci) {
+                if (teks.includes(k)) {
+                    benarJawaban = true;
+                    break;
+                }
+            }
+        }
+
+        if (benarJawaban) {
+            skor += 20;
+            document.getElementById("benar").play();
+        } else {
+            document.getElementById("salah").play();
+        }
+
+        index++;
+
+        if (index < soal.length) {
+            tampil();
+        } else {
+            // Kuis Selesai
+            clearInterval(interval);
+            document.getElementById("nextBtn").style.display = "none";
+
+            let nilai = "";
+            if (skor >= 90) nilai = "A (Sangat Baik)";
+            else if (skor >= 70) nilai = "B (Baik)";
+            else if (skor >= 50) nilai = "C (Cukup)";
+            else nilai = "D (Perlu Belajar Lagi)";
+
+            document.getElementById("quiz").innerHTML = "";
+            document.getElementById("hasil").innerHTML =
+                "Quiz Selesai!<br>Skor Akhir: " + skor + "<br>Nilai: " + nilai;
+
+            document.getElementById("selesai").play();
+            document.getElementById("ulang").style.display = "inline-block";
+        }
+    }
+
+    // Fungsi timer
+    function timer() {
+        if (waktu > 0) {
+            waktu--;
+            document.getElementById("timer").innerText = waktu;
+        } else {
+            clearInterval(interval);
+            document.getElementById("nextBtn").style.display = "none";
+            document.getElementById("quiz").innerHTML = "";
+            document.getElementById("hasil").innerHTML =
+                "Waktu Habis!<br>Skor Kamu: " + skor;
+            document.getElementById("ulang").style.display = "inline-block";
+        }
+    }
+
+    // Fungsi untuk memulai quiz
+    function mulaiQuiz() {
+        // Reset dan sembunyikan tombol start
+        waktu = 60;
+        skor = 0;
+        index = 0;
+        document.getElementById("startBtn").style.display = "none";
+        document.getElementById("hasil").innerHTML = "";
+        document.getElementById("timer").innerText = waktu;
+        
+        // Mulai timer dan tampilkan soal pertama
+        interval = setInterval(timer, 1000);
+        tampil();
+    }
+
+    // Fungsi untuk mengulangi quiz (sudah ada, dimodifikasi sedikit)
+    function ulangQuiz() {
+        document.getElementById("ulang").style.display = "none";
+        mulaiQuiz(); // Panggil fungsi mulaiQuiz untuk mereset dan memulai
+    }
+
+    // INIT: Sembunyikan tombol next dan ulang di awal
+    document.getElementById("nextBtn").style.display = "none";
+    document.getElementById("ulang").style.display = "none";
+    
+    </script>
+
 </div>
 
 <script>
@@ -532,18 +724,18 @@ document.getElementById('nextBtn').addEventListener('click',()=>{
 
 // Daftar isi (kata kunci) berdasarkan konten websitemu
 const searchData = [
-  { title: "Pengertian CPU", page: 0 },
-  { title: "Analisis Struktur CPU", page: 1 },
-  { title: "Struktur CPU", page: 2 },
-  { title: "ALU (Arithmetic Logic Unit)", page: 2 },
-  { title: "CU (Control Unit)", page: 2 },
-  { title: "Register", page: 2 },
-  { title: "Cache", page: 2 },
-  { title: "Simulasi Cara Kerja CPU", page: 3 },
-  { title: "Perbandingan CPU Klasik vs Modern", page: 4 },
-  { title: "CPU Klasik", page: 4 },
-  { title: "CPU Modern", page: 4 },
-  { title: "Kesimpulan CPU", page: 5 }
+    { title: "Pengertian CPU", page: 0 },
+    { title: "Analisis Struktur CPU", page: 1 },
+    { title: "Struktur CPU", page: 2 },
+    { title: "ALU (Arithmetic Logic Unit)", page: 2 },
+    { title: "CU (Control Unit)", page: 2 },
+    { title: "Register", page: 2 },
+    { title: "Cache", page: 2 },
+    { title: "Simulasi Cara Kerja CPU", page: 3 },
+    { title: "Perbandingan CPU Klasik vs Modern", page: 4 },
+    { title: "CPU Klasik", page: 4 },
+    { title: "CPU Modern", page: 4 },
+    { title: "Kesimpulan CPU", page: 5 }
 ];
 
 const input = document.getElementById("searchInput");
@@ -551,43 +743,43 @@ const suggestionBox = document.getElementById("suggestionBox");
 
 // Menampilkan rekomendasi sesuai input
 function showSuggestions(value) {
-  const query = value.toLowerCase();
-  suggestionBox.innerHTML = "";
-  if (!query) {
-    suggestionBox.style.display = "none";
-    return;
-  }
+    const query = value.toLowerCase();
+    suggestionBox.innerHTML = "";
+    if (!query) {
+        suggestionBox.style.display = "none";
+        return;
+    }
 
-  // Filter hasil berdasarkan teks yang cocok
-  const filtered = searchData.filter(item =>
-    item.title.toLowerCase().includes(query)
-  );
+    // Filter hasil berdasarkan teks yang cocok
+    const filtered = searchData.filter(item =>
+        item.title.toLowerCase().includes(query)
+    );
 
-  if (filtered.length === 0) {
-    suggestionBox.style.display = "none";
-    return;
-  }
+    if (filtered.length === 0) {
+        suggestionBox.style.display = "none";
+        return;
+    }
 
-  // Tampilkan daftar hasil
-  filtered.forEach(item => {
-    const li = document.createElement("li");
-    li.textContent = item.title;
-    li.onclick = () => {
-      goToPage(item.page);
-      suggestionBox.style.display = "none";
-      input.value = "";
-    };
-    suggestionBox.appendChild(li);
-  });
+    // Tampilkan daftar hasil
+    filtered.forEach(item => {
+        const li = document.createElement("li");
+        li.textContent = item.title;
+        li.onclick = () => {
+            goToPage(item.page);
+            suggestionBox.style.display = "none";
+            input.value = "";
+        };
+        suggestionBox.appendChild(li);
+    });
 
-  suggestionBox.style.display = "block";
+    suggestionBox.style.display = "block";
 }
 
 // Menyembunyikan kotak saran saat klik di luar
 document.addEventListener("click", (e) => {
-  if (!e.target.closest(".search-container")) {
-    suggestionBox.style.display = "none";
-  }
+    if (!e.target.closest(".search-container")) {
+        suggestionBox.style.display = "none";
+    }
 });
 </script>
 </body>
